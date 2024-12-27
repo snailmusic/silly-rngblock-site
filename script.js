@@ -110,12 +110,20 @@ function set_shits_up() {
         antique.innerText = data.antique[index]
         antique.className = "antique"
 
+        let nrarity = document.createElement("td")
+        nrarity.innerText = `1/${Math.pow(2, index + 1)}`
+        let ararity = document.createElement("td")
+        ararity.innerText = `1/${Math.pow(2, index + 1) * 100}`
+
+
         elements.normal.push(number)
         elements.antique.push(antique)
 
         container.appendChild(name)
         container.appendChild(number)
         container.appendChild(antique)
+        container.appendChild(nrarity)
+        container.appendChild(ararity)
         body.appendChild(container)
     }
     
