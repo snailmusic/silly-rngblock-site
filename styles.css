@@ -5,3 +5,25 @@
 .antique {
     color: rgb(117, 100, 0);
 }
+
+body {
+    min-height: calc(100vh - 2rem);
+    padding: 1rem;
+    margin: 0;
+}
+
+footer {
+    position:sticky;
+    bottom: 1rem;
+    background-color: white;
+    box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.28);
+    padding: 0.25rem;
+    border-radius: 0.25rem;
+}
+
+#clicky {
+    right: 1rem;
+    position: absolute;
+    aspect-ratio: 1/1;
+    width: 3rem;
+}

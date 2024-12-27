@@ -87,6 +87,10 @@ function migrate_versions(versionfrom) {
 }
 
 function set_shits_up() {
+    let footer = document.getElementById("footer")
+    footer.innerText = `version: ${version}
+    made by snail inspired by zedneon's level silly rngblock level id 100950762`
+    let body = document.getElementById("main")
     init_data()
     for (let index = 0; index < names.length; index++) {
         const element = names[index];
@@ -113,7 +117,7 @@ function set_shits_up() {
         container.appendChild(number)
         container.appendChild(document.createTextNode(", "))
         container.appendChild(antique)
-        document.body.appendChild(container)
+        body.appendChild(container)
     }
     
 }
