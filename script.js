@@ -1,5 +1,9 @@
-let data = []
-let elements = []
+let data = {}
+let elements = {
+    "normal": [],
+    "antique": [],
+}
+let version = "2"
 let names = [
     "Passive",
     "Common",
@@ -37,7 +41,10 @@ function roll() {
 function check(i) {
     var idx = Math.min(i, names.length - 1)
     if (Math.random() > 0.5) {
-        data[idx] += 1
+        data.normal[idx] += 1
+        if (Math.random() < 0.01) {
+            data.antique[idx] += 1
+        }
         update_text(idx)
     }
     else {
@@ -45,10 +52,42 @@ function check(i) {
     }
 }
 
-function set_shits_up() {
-    if (JSON.parse(localStorage.getItem("data")) != undefined){
-        data = JSON.parse(localStorage.getItem("data"))
+function init_data() {
+    if (localStorage.getItem("version") == undefined) {
+        let normaldata = []
+        let antiquedata = []
+        for (let index = 0; index < names.length; index++) {
+            normaldata[index] = 0
+            antiquedata[index] = 0
+        }
+        data["normal"] = normaldata
+        data["antique"] = antiquedata
+
+        save_data()
     }
+    else {
+        init_localstorage()
+    }
+}
+
+function init_localstorage() {
+    if (localStorage.getItem("version") != version) {
+        migrate_versions(localStorage.getItem("version"))
+        return
+    }
+    data = JSON.parse(localStorage.getItem("data"))
+}
+
+function migrate_versions(versionfrom) {
+    switch (versionfrom) {
+        default:
+            localStorage.clear()
+            break;
+    }
+}
+
+function set_shits_up() {
+    init_data()
     for (let index = 0; index < names.length; index++) {
         const element = names[index];
         
@@ -56,29 +95,38 @@ function set_shits_up() {
         container.className = "namecontainer"
 
         let name = document.createElement("span")
-        name.innerText = `${element}:`
+        name.innerText = `${element}: `
+        name.className = "rarity"
+        name.id = element
 
         let number = document.createElement("span")
-        if (data[index] != undefined) {
-            number.innerText = data[index]
-        }
-        else {
-            data[index] = 0
-            number.innerText = 0
-        }
-        elements.push(number)
+        number.innerText = data.normal[index]
+
+        let antique = document.createElement("span")
+        antique.innerText = data.antique[index]
+        antique.className = "antique"
+
+        elements.normal.push(number)
+        elements.antique.push(antique)
 
         container.appendChild(name)
         container.appendChild(number)
+        container.appendChild(document.createTextNode(", "))
+        container.appendChild(antique)
         document.body.appendChild(container)
     }
     
 }
 
 function update_text(idx) {
-    console.log(data);
+    // console.log(data);
     
-    elements[idx].innerText = data[idx]
-    localStorage.setItem("data", JSON.stringify(data))
+    elements.normal[idx].innerText = data.normal[idx]
+    elements.antique[idx].innerText = data.antique[idx]
+    save_data()
 }
 
+function save_data() {
+    localStorage.setItem("data", JSON.stringify(data))
+    localStorage.setItem("version", version)
+}
