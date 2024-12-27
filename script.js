@@ -95,18 +95,18 @@ function set_shits_up() {
     for (let index = 0; index < names.length; index++) {
         const element = names[index];
         
-        let container = document.createElement("div")
+        let container = document.createElement("tr")
         container.className = "namecontainer"
 
-        let name = document.createElement("span")
-        name.innerText = `${element}: `
+        let name = document.createElement("td")
+        name.innerText = `${element}`
         name.className = "rarity"
         name.id = element
 
-        let number = document.createElement("span")
+        let number = document.createElement("td")
         number.innerText = data.normal[index]
 
-        let antique = document.createElement("span")
+        let antique = document.createElement("td")
         antique.innerText = data.antique[index]
         antique.className = "antique"
 
@@ -115,7 +115,6 @@ function set_shits_up() {
 
         container.appendChild(name)
         container.appendChild(number)
-        container.appendChild(document.createTextNode(", "))
         container.appendChild(antique)
         body.appendChild(container)
     }
