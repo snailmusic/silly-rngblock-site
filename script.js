@@ -2,8 +2,9 @@ let data = {}
 let elements = {
     "normal": [],
     "antique": [],
+    "amt": undefined,
 }
-let version = "2"
+let version = "3"
 let names = [
     "Passive",
     "Common",
@@ -35,6 +36,7 @@ let names = [
 ]
 
 function roll() {
+    data.clickamt += 1
     check(0)
 }
 
@@ -62,6 +64,7 @@ function init_data() {
         }
         data["normal"] = normaldata
         data["antique"] = antiquedata
+        data["clickamt"] = 0
 
         save_data()
     }
@@ -71,15 +74,23 @@ function init_data() {
 }
 
 function init_localstorage() {
+    data = JSON.parse(localStorage.getItem("data"))
     if (localStorage.getItem("version") != version) {
         migrate_versions(localStorage.getItem("version"))
         return
     }
-    data = JSON.parse(localStorage.getItem("data"))
 }
 
 function migrate_versions(versionfrom) {
     switch (versionfrom) {
+        case "2":
+            let sum = 0
+            data.normal.forEach(val => {
+                sum += val
+            });
+            data.clickamt = sum
+            save_data()
+            break;
         default:
             localStorage.clear()
             break;
@@ -87,11 +98,14 @@ function migrate_versions(versionfrom) {
 }
 
 function set_shits_up() {
+    init_data()
     let footer = document.getElementById("footer")
     footer.innerText = `version: ${version}
     made by snail inspired by zedneon's level silly rngblock level id 100950762`
+    elements.amt = document.createElement("div")
+    elements.amt.innerText = `clicks: ${data.clickamt}`
+    footer.appendChild(elements.amt)
     let body = document.getElementById("main")
-    init_data()
     for (let index = 0; index < names.length; index++) {
         const element = names[index];
         
@@ -134,6 +148,7 @@ function update_text(idx) {
     
     elements.normal[idx].innerText = data.normal[idx]
     elements.antique[idx].innerText = data.antique[idx]
+    elements.amt.innerText = `clicks: ${data.clickamt}`
     save_data()
 }
 
