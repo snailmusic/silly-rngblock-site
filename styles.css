@@ -27,3 +27,7 @@ footer {
     aspect-ratio: 1/1;
     width: 3rem;
 }
+
+table {
+    border-spacing: 0.2rem;
+}
