@@ -141,3 +141,13 @@ function save_data() {
     localStorage.setItem("data", JSON.stringify(data))
     localStorage.setItem("version", version)
 }
+
+function reset() {
+    localStorage.clear()
+    data = {}
+    init_data()
+
+    for (let idx = 0; idx < names.length; idx++) {
+        update_text(idx)        
+    }
+}
